@@ -1,5 +1,11 @@
 package com.vikash.currencyconverter
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+
 data class CurrencyData(
     val AUD: Double,
     val BGN: Double,
@@ -38,4 +44,34 @@ data class CurrencyData(
 
 class FinalDataHolder {
     val data : CurrencyData= CurrencyData(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)
+}
+
+class RunnerData{
+    private var _userInputValue: String? by mutableStateOf("")
+
+
+    var showValueHolder: String? by mutableStateOf(_userInputValue)
+
+
+    fun setUserInputValue(value: String?){
+        _userInputValue= value
+        showValueHolder=_userInputValue
+    }
+
+    var fromMenuIsExpanded by mutableStateOf(false)
+
+    fun fromMenuHider(){
+        fromMenuIsExpanded=false
+    }
+
+    var toMenuIsExpanded by mutableStateOf(false)
+
+    fun toMenuHider(){
+        toMenuIsExpanded=false
+    }
+
+    var fromChosenValue: Double= 0.0
+    var toChosenValue: Double= 0.0
+    var fromButtonString: String= "FROM"
+    var toButtonString: String= "TO"
 }

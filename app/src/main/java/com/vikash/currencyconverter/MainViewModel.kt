@@ -1,7 +1,11 @@
 package com.vikash.currencyconverter
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -10,6 +14,7 @@ import java.lang.Exception
 class MainViewModel: ViewModel() {
     private val _stateHolder= mutableStateOf(DataState())
     val stateHolderExposer: State<DataState> = _stateHolder
+    val runner: RunnerData= RunnerData()
 
     init {
         fetchDataHandler()
@@ -40,3 +45,5 @@ data class DataState(
     val dataObject: FinalDataHolder= FinalDataHolder(),
     val error: String?= null
 )
+
+
