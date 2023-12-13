@@ -62,16 +62,32 @@ class RunnerData{
 
     fun fromMenuHider(){
         fromMenuIsExpanded=false
+        finalInputConverter()
     }
 
     var toMenuIsExpanded by mutableStateOf(false)
 
     fun toMenuHider(){
         toMenuIsExpanded=false
+        finalInputConverter()
     }
 
-    var fromChosenValue: Double= 0.0
-    var toChosenValue: Double= 0.0
+    var fromChosenValue: Double by mutableStateOf(0.0)
+    var toChosenValue: Double by mutableStateOf(0.0)
     var fromButtonString: String= "FROM"
     var toButtonString: String= "TO"
+    var usdReference: Double by mutableStateOf(0.0)
+
+    var inputFinalValue: Double by mutableStateOf(0.0)
+    var convertedAmount: Double by mutableStateOf(0.0)
+
+    fun finalInputConverter(){
+        inputFinalValue= _userInputValue?.toDoubleOrNull() ?: 0.0
+        convertedAmountFinder()
+    }
+
+    fun convertedAmountFinder(){
+        convertedAmount= (inputFinalValue/fromChosenValue)*toChosenValue
+    }
+
 }

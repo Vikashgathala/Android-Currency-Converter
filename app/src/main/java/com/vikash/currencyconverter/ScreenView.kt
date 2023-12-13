@@ -1,6 +1,7 @@
 package com.vikash.currencyconverter
 
 import android.graphics.Paint.Style
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
@@ -100,7 +101,8 @@ fun screenView(modifier: Modifier= Modifier){
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(modifier = Modifier){
-                        Button(onClick = { stateDescriptor.runner.fromMenuIsExpanded=true },
+                        Button(onClick = { stateDescriptor.runner.fromMenuIsExpanded=true
+                                         stateDescriptor.runner.usdReference= stateDescriptor.stateHolderExposer.value.dataObject.data.USD},
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.White
                             )
@@ -117,10 +119,13 @@ fun screenView(modifier: Modifier= Modifier){
                             Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
                         }
                         DropdownMenu(expanded = stateDescriptor.runner.fromMenuIsExpanded, onDismissRequest = {stateDescriptor.runner.fromMenuHider()},
-                            modifier= Modifier.background(color = Color(android.graphics.Color.parseColor("#080808"))).border(width = 0.8.dp,
-                                color = Color.White,
-                                shape= RoundedCornerShape(15.dp)
-                            )
+                            modifier= Modifier
+                                .background(color = Color(android.graphics.Color.parseColor("#080808")))
+                                .border(
+                                    width = 0.8.dp,
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(15.dp)
+                                )
                                 .width(140.dp)
                         ) {
                             DropdownMenuItem(text = {Text("AUD", style = TextStyle(fontSize = 20.sp, color = Color.White))}, onClick = {
@@ -287,7 +292,8 @@ fun screenView(modifier: Modifier= Modifier){
                     }
                         Spacer(modifier = Modifier.width(30.dp))
                     Box(modifier = Modifier){
-                        Button(onClick = { stateDescriptor.runner.toMenuIsExpanded=true },
+                        Button(onClick = { stateDescriptor.runner.toMenuIsExpanded=true
+                            stateDescriptor.runner.usdReference= stateDescriptor.stateHolderExposer.value.dataObject.data.USD},
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.White
                             )
@@ -306,10 +312,13 @@ fun screenView(modifier: Modifier= Modifier){
                             Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
                         }
                         DropdownMenu(expanded = stateDescriptor.runner.toMenuIsExpanded, onDismissRequest = {stateDescriptor.runner.toMenuHider()},
-                            modifier= Modifier.background(color = Color(android.graphics.Color.parseColor("#080808"))).border(width = 0.8.dp,
-                                color = Color.White,
-                                shape= RoundedCornerShape(15.dp)
-                            )
+                            modifier= Modifier
+                                .background(color = Color(android.graphics.Color.parseColor("#080808")))
+                                .border(
+                                    width = 0.8.dp,
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(15.dp)
+                                )
                                 .width(140.dp)) {
                             DropdownMenuItem(text = {Text("AUD", style = TextStyle(fontSize = 20.sp, color = Color.White))}, onClick = {
                                 stateDescriptor.runner.toChosenValue= stateDescriptor.stateHolderExposer.value.dataObject.data.AUD
@@ -486,9 +495,19 @@ fun screenView(modifier: Modifier= Modifier){
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
+                    Box(modifier = Modifier.width(80.dp)){
+                        if (stateDescriptor.runner.fromButtonString== "FROM" || stateDescriptor.runner.toButtonString=="TO"){
+                            Text(text = "")
+                        }else{
+                            Text(text = "${stateDescriptor.runner.fromButtonString} :",
+                                style = TextStyle(fontSize = 22.sp,
+                                    color = Color.White))
+                        }
+                    }
+
                     OutlinedTextField(value = stateDescriptor.runner.showValueHolder.toString(), onValueChange = {
-                        stateDescriptor.runner.setUserInputValue(it
-                        )},
+                        stateDescriptor.runner.setUserInputValue(it)
+                        stateDescriptor.runner.finalInputConverter()},
                         shape = RoundedCornerShape(CornerSize(15.dp)),
                         textStyle = TextStyle(fontSize = 25.sp),
                         modifier = Modifier
@@ -506,12 +525,67 @@ fun screenView(modifier: Modifier= Modifier){
                         )
                     )
                 }
+                
+               // Text(text = "${stateDescriptor.runner.convertedAmount}")
+                Spacer(modifier = Modifier.height(20.dp))
+                Row(
+                    modifier= Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Box(modifier = Modifier.width(80.dp)){
+                        if (stateDescriptor.runner.fromButtonString== "FROM" || stateDescriptor.runner.toButtonString=="TO"){
+                            Text(text = "")
+                        }else{
+                            Text(text = "${stateDescriptor.runner.toButtonString} :",
+                                style = TextStyle(fontSize = 22.sp,
+                                    color = Color.White))
+                        }
+                    }
+                    Box(modifier = Modifier
+                        .background(
+                            color = Color(android.graphics.Color.parseColor("#323232")),
+                            shape = RoundedCornerShape(20)
+                        )
+                        .border(BorderStroke(0.dp, Color.Transparent))
+                        .offset(y = 200.dp)
+                        .height(60.dp)
+                        .width(280.dp)
+                    ){
+                        if (stateDescriptor.runner.convertedAmount.isNaN()){
+                            Text(
+                                text = "0",
+                                style = TextStyle(
+                                    color = Color(android.graphics.Color.parseColor("#949494")),
+                                    fontSize = 24.sp
+                                ),
+                                modifier = Modifier.offset(x= 10.dp ,y = -187.dp)
+                            )
+                        }else {
+                            if (stateDescriptor.runner.convertedAmount == 0.0) {
+                                Text(
+                                    text = "0",
+                                    style = TextStyle(
+                                        color = Color(android.graphics.Color.parseColor("#949494")),
+                                        fontSize = 24.sp
+                                    ),
+                                    modifier = Modifier.offset(x = 10.dp, y = -187.dp)
+                                )
+                            } else {
+                                Text(
+                                    text = "${stateDescriptor.runner.convertedAmount}",
+                                    style = TextStyle(
+                                        color = Color.White,
+                                        fontSize = 24.sp
+                                    ),
+                                    modifier = Modifier.offset(x = 10.dp, y = -187.dp)
+                                )
+                            }
+                        }
+                    }
 
+                }
             }
-
-
-
-
 
         }
     }
