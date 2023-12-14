@@ -126,7 +126,7 @@ fun screenView(modifier: Modifier= Modifier){
                                     color = Color.White,
                                     shape = RoundedCornerShape(15.dp)
                                 )
-                                .width(140.dp)
+                                .width(150.dp)
                         ) {
                             DropdownMenuItem(text = {Text("AUD", style = TextStyle(fontSize = 20.sp, color = Color.White))}, onClick = {
                                 stateDescriptor.runner.fromChosenValue= stateDescriptor.stateHolderExposer.value.dataObject.data.AUD
@@ -319,7 +319,7 @@ fun screenView(modifier: Modifier= Modifier){
                                     color = Color.White,
                                     shape = RoundedCornerShape(15.dp)
                                 )
-                                .width(140.dp)) {
+                                .width(150.dp)) {
                             DropdownMenuItem(text = {Text("AUD", style = TextStyle(fontSize = 20.sp, color = Color.White))}, onClick = {
                                 stateDescriptor.runner.toChosenValue= stateDescriptor.stateHolderExposer.value.dataObject.data.AUD
                                 stateDescriptor.runner.toButtonString= "AUD"
